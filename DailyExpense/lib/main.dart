@@ -39,79 +39,7 @@ class Home extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: Container(
-              alignment: Alignment.centerLeft,
-              margin: EdgeInsets.only(
-                left: width * 0.05,
-                right: width * 0.05,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(height * 0.05),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(width * 0.05),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Rs. 341",
-                          style: TextStyle(
-                              fontSize: height * 0.03, color: Colors.grey[800]),
-                        ),
-                        Text(
-                          "Money Left for the day",
-                          style: TextStyle(
-                              fontSize: height * 0.02, color: Colors.grey[800]),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: height * 0.03,
-                  ),
-                  Container(
-                    alignment: Alignment.centerRight,
-                    height: height * 0.085,
-                    width: width,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(height * 0.05),
-                    ),
-                    margin: EdgeInsets.only(
-                      left: width * 0.05,
-                      right: width * 0.05,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: width * 0.09),
-                          child: Text(
-                            "View Stats",
-                            style: TextStyle(fontSize: height * 0.02),
-                          ),
-                        ),
-                        Container(
-                          height: height * 0.05,
-                          margin: EdgeInsets.only(right: width * 0.09),
-                          child: Image(
-                            image: AssetImage(
-                              "images/arrow.png",
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          Expanded(flex: 2, child: StatesButton()),
         ],
       ),
     );
@@ -217,7 +145,9 @@ class ExpenseWidget extends StatelessWidget {
                     child: RaisedButton(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(height * 0.03)),
-                      onPressed: () {},
+                      onPressed: () {
+                        popSlider(context, height, width);
+                      },
                       child: Icon(
                         Icons.add,
                         size: width * 0.15,
@@ -238,7 +168,7 @@ class ExpenseWidget extends StatelessWidget {
                       padding: EdgeInsets.only(
                           top: height * 0.01, bottom: height * 0.01),
                       child: Text(
-                        "Rs. " + (index * 243).toString(),
+                        "Rs. " + (index * 10).toString(),
                         style: TextStyle(
                           color: Colors.grey[800],
                         ),
@@ -250,6 +180,110 @@ class ExpenseWidget extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void popSlider(context, height, width) {
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.vertical(top: Radius.circular(height * 0.03))),
+        context: context,
+        builder: (BuildContext ctx) {
+          return Container(
+            height: height * 0.4,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.all(height * 0.01),
+                  height: height * 0.008,
+                  width: width * 0.3,
+                  decoration: BoxDecoration(
+                      color: Colors.grey[850],
+                      borderRadius: BorderRadius.circular(width * 0.01)),
+                )
+              ],
+            ),
+          );
+        });
+  }
+}
+
+class StatesButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    return Container(
+      alignment: Alignment.centerLeft,
+      margin: EdgeInsets.only(
+        left: width * 0.05,
+        right: width * 0.05,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(height * 0.05),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(width * 0.05),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Rs. 341",
+                  style: TextStyle(
+                      fontSize: height * 0.03, color: Colors.grey[800]),
+                ),
+                Text(
+                  "Money Left for the day",
+                  style: TextStyle(
+                      fontSize: height * 0.02, color: Colors.grey[800]),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: height * 0.03,
+          ),
+          Container(
+            alignment: Alignment.centerRight,
+            height: height * 0.085,
+            width: width,
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(height * 0.05),
+            ),
+            margin: EdgeInsets.only(
+              left: width * 0.05,
+              right: width * 0.05,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: width * 0.09),
+                  child: Text(
+                    "View Stats",
+                    style: TextStyle(fontSize: height * 0.02),
+                  ),
+                ),
+                Container(
+                  height: height * 0.05,
+                  margin: EdgeInsets.only(right: width * 0.09),
+                  child: Image(
+                    image: AssetImage(
+                      "images/arrow.png",
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
