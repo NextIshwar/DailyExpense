@@ -1,4 +1,7 @@
 import 'package:DailyExpense/config/config.dart';
+import 'package:DailyExpense/data/data.dart';
+import 'package:DailyExpense/model/expense_items.dart';
+import 'package:DailyExpense/second_page/stats_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,8 +16,9 @@ void main() {
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    SizeConfig().init(context);
+    double height = SizeConfig.screenHeight;
+    double width = SizeConfig.screenWidth;
     return Scaffold(
       body: Column(
         children: [
@@ -28,7 +32,7 @@ class Home extends StatelessWidget {
                 gradient: LinearGradient(
                     begin: Alignment.topRight,
                     end: Alignment.bottomLeft,
-                    colors: [Colors.lime, Colors.orange[400]]),
+                    colors: [Colors.limeAccent[700], Colors.orange[400]]),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,8 +53,8 @@ class Home extends StatelessWidget {
 class DateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    double height = SizeConfig.screenHeight;
+    double width = SizeConfig.screenWidth;
 
     return Expanded(
       flex: 1,
@@ -112,8 +116,8 @@ class DateWidget extends StatelessWidget {
 class ExpenseWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    double height = SizeConfig.screenHeight;
+    double width = SizeConfig.screenWidth;
     return Expanded(
       flex: 3,
       child: Container(
@@ -187,25 +191,15 @@ class ExpenseWidget extends StatelessWidget {
   void popSlider(context, height, width) {
     showModalBottomSheet(
         shape: RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.vertical(top: Radius.circular(height * 0.03))),
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(height * 0.03),
+          ),
+        ),
         context: context,
         builder: (BuildContext ctx) {
-          return Container(
-            height: height * 0.4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  margin: EdgeInsets.all(height * 0.01),
-                  height: height * 0.008,
-                  width: width * 0.3,
-                  decoration: BoxDecoration(
-                      color: Colors.grey[850],
-                      borderRadius: BorderRadius.circular(width * 0.01)),
-                )
-              ],
-            ),
+          return SliderDialogue(
+            height: height,
+            width: width,
           );
         });
   }
@@ -214,8 +208,8 @@ class ExpenseWidget extends StatelessWidget {
 class StatesButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    double height = SizeConfig.screenHeight;
+    double width = SizeConfig.screenWidth;
     return Container(
       alignment: Alignment.centerLeft,
       margin: EdgeInsets.only(
@@ -249,41 +243,145 @@ class StatesButton extends StatelessWidget {
           SizedBox(
             height: height * 0.03,
           ),
-          Container(
-            alignment: Alignment.centerRight,
-            height: height * 0.085,
-            width: width,
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(height * 0.05),
-            ),
-            margin: EdgeInsets.only(
-              left: width * 0.05,
-              right: width * 0.05,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: width * 0.09),
-                  child: Text(
-                    "View Stats",
-                    style: TextStyle(fontSize: height * 0.02),
-                  ),
-                ),
-                Container(
-                  height: height * 0.05,
-                  margin: EdgeInsets.only(right: width * 0.09),
-                  child: Image(
-                    image: AssetImage(
-                      "images/arrow.png",
+          GestureDetector(
+            child: Container(
+              alignment: Alignment.centerRight,
+              height: height * 0.085,
+              width: width,
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(height * 0.05),
+              ),
+              margin: EdgeInsets.only(
+                left: width * 0.05,
+                right: width * 0.05,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: width * 0.09),
+                    child: Text(
+                      "View Stats",
+                      style: TextStyle(fontSize: height * 0.02),
                     ),
                   ),
+                  Container(
+                    height: height * 0.05,
+                    margin: EdgeInsets.only(right: width * 0.09),
+                    child: Image(
+                      image: AssetImage(
+                        "images/arrow.png",
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => StatsWidget(),
                 ),
-              ],
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SliderDialogue extends StatefulWidget {
+  final double height, width;
+  SliderDialogue({this.height, this.width});
+  @override
+  _SliderDialogueState createState() => _SliderDialogueState();
+}
+
+class _SliderDialogueState extends State<SliderDialogue> {
+  final key = GlobalKey<AnimatedListState>();
+  final items = List.from(Data.expenseItem);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: widget.height * 0.4,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            margin: EdgeInsets.all(widget.height * 0.01),
+            height: widget.height * 0.008,
+            width: widget.width * 0.3,
+            decoration: BoxDecoration(
+              color: Colors.grey[850],
+              borderRadius: BorderRadius.circular(widget.width * 0.01),
+            ),
+          ),
+          Container(
+              height: 100,
+              child: AddExpenseWidget(
+                  item: Data.expenseItem[0],
+                  onClicked: () {
+                    print("object");
+                  })),
+          Container(
+            height: 100,
+            child: RaisedButton(
+              onPressed: () {},
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget addExpense(item, int index, Animation<double> animation) {
+    return AddExpenseWidget(item: item, onClicked: removeItem(index));
+  }
+
+  removeItem(int index) {
+    final item = items.removeAt(index);
+    key.currentState.removeItem(
+        index, (context, animation) => addExpense(item, index, animation));
+  }
+
+  insertItem(int index, ExpenseItem item) {
+    items.insert(index, item);
+    key.currentState.insertItem(index);
+  }
+}
+
+class AddExpenseWidget extends StatelessWidget {
+  final ExpenseItem item;
+  // final Animation animation;
+  final VoidCallback onClicked;
+  AddExpenseWidget(
+      {@required this.item,
+      //   @required this.animation,
+      @required this.onClicked});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+          color: Colors.grey, borderRadius: BorderRadius.circular(12)),
+      child: ListTile(
+        contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+        leading: CircleAvatar(
+          radius: 32,
+          backgroundImage: AssetImage("images/money_expense.png"),
+        ),
+        title: Text(
+          item.price.toString(),
+          style: TextStyle(fontSize: 20),
+        ),
+        trailing: IconButton(
+          icon: Icon(Icons.delete),
+          onPressed: onClicked,
+        ),
       ),
     );
   }
