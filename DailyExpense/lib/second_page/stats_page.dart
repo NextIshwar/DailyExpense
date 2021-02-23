@@ -1,4 +1,5 @@
 import 'package:DailyExpense/config/config.dart';
+import 'package:DailyExpense/model/expense_items.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
@@ -159,12 +160,12 @@ class _MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<_MyHomePage> {
-  List<_ExpenseData> data = [
-    _ExpenseData('Jan', 350),
-    _ExpenseData('Feb', 280),
-    _ExpenseData('Mar', 340),
-    _ExpenseData('Apr', 320),
-    _ExpenseData('May', 200)
+  List<ExpenseData> data = [
+    ExpenseData('Jan', 350),
+    ExpenseData('Feb', 280),
+    ExpenseData('Mar', 340),
+    ExpenseData('Apr', 320),
+    ExpenseData('May', 200)
   ];
   @override
   Widget build(BuildContext context) {
@@ -177,21 +178,14 @@ class _MyHomePageState extends State<_MyHomePage> {
         // Enable tooltip
         tooltipBehavior: TooltipBehavior(
             enable: true, format: 'Month : point.x, Rs. point.y'),
-        series: <ChartSeries<_ExpenseData, String>>[
-          LineSeries<_ExpenseData, String>(
+        series: <ChartSeries<ExpenseData, String>>[
+          LineSeries<ExpenseData, String>(
               dataSource: data,
-              xValueMapper: (_ExpenseData sales, _) => sales.month,
-              yValueMapper: (_ExpenseData sales, _) => sales.expense,
+              xValueMapper: (ExpenseData sales, _) => sales.month,
+              yValueMapper: (ExpenseData sales, _) => sales.expense,
               name: "Expense",
               // Enable data label
               dataLabelSettings: DataLabelSettings(isVisible: true))
         ]);
   }
-}
-
-class _ExpenseData {
-  _ExpenseData(this.month, this.expense);
-
-  final String month;
-  final double expense;
 }

@@ -9,3 +9,10 @@ class ExpenseItem {
     @required this.description,
   });
 }
+
+class ExpenseData {
+  ExpenseData(this.month, this.expense);
+
+  final String month;
+  final double expense;
+}
