@@ -2,7 +2,6 @@ import 'package:DailyExpense/config/config.dart';
 import 'package:DailyExpense/model/expense_items.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 class StatsWidget extends StatelessWidget {
   @override
@@ -22,12 +21,42 @@ class StatsWidget extends StatelessWidget {
                         end: Alignment.bottomLeft,
                         colors: [Colors.limeAccent[700], Colors.amberAccent]),
                   ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 150.0),
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: MediaQuery.of(context).size.width,
+                      child: Text(
+                        "Your Stats",
+                        style: TextStyle(
+                            color: ColorPalette.fontColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 35),
+                      ),
+                    ),
+                  ),
                 ),
               ),
               Expanded(
                 flex: 5,
                 child: Container(
                   color: Colors.grey[300],
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        left: SizeConfig.screenWidth * 0.05, top: 350.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Past Records",
+                          style: TextStyle(
+                              color: ColorPalette.fontColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        ),
+                        Icon(Icons.arrow_drop_down_outlined),
+                      ],
+                    ),
+                  ),
                 ),
               )
             ],
@@ -123,6 +152,37 @@ class StatsWidget extends StatelessWidget {
                         color: ColorPalette.secondaryColor,
                         borderRadius: BorderRadius.circular(20),
                       ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              "Average expense",
+                              style: TextStyle(
+                                  color: ColorPalette.fontColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              height: 100,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                    color: Colors.limeAccent[700], width: 5),
+                                borderRadius: BorderRadius.circular(1000),
+                              ),
+                              child: Text(
+                                "Rs 230/day",
+                                style: TextStyle(
+                                    color: ColorPalette.fontColor,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
                     ),
                     Container(
                       margin:
@@ -132,6 +192,37 @@ class StatsWidget extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: ColorPalette.secondaryColor,
                         borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text(
+                              "Daily goal",
+                              style: TextStyle(
+                                  color: ColorPalette.fontColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              height: 100,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                    color: Colors.limeAccent[700], width: 5),
+                                borderRadius: BorderRadius.circular(1000),
+                              ),
+                              child: Text(
+                                "Rs 130/day",
+                                style: TextStyle(
+                                    color: ColorPalette.fontColor,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ],
